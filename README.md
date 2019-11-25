@@ -9,4 +9,8 @@ CentraleSupélec Atelier developpement logiciel, sujet 4, où sortir
 • On ne veut pas rater un événement
 
 ## Deadline:
-  Around february
+  Around February
+  
+## Team member
+Adnane Hamid, Fabricio Cravo, Haotian Chu, Jiahao Lu, Zhuofan Yu, Zhihao Lu
+
