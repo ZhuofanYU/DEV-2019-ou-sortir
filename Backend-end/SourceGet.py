@@ -8,9 +8,10 @@ def initialisation(url):
             dic = json.loads(f)
     except TypeError:
         dic = get_data_from_API_with_head(url)
+        cleaned_data = data_clean(dic)
         print()
     with open('data.json', 'w') as f:
-        json.dump(dic,f)
+        json.dump(cleaned_data,f)
 
 url = 'https://opendata.paris.fr/api/records/1.0/search/?dataset=que-faire-a-paris-&rows=10000&facet=category&facet=tags&facet=address_zipcode&facet=address_city&facet=pmr&facet=blind&facet=deaf&facet=access_type&facet=price_type'
 initialisation(url)

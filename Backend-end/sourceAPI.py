@@ -1,4 +1,5 @@
 from urllib import request
+import json
 def get_data_from_API(url):
     with request.urlopen(url) as f:
         data = f.read()
@@ -17,8 +18,25 @@ def get_data_from_API_with_head(url):
         # for k, v in f.getheaders():
         #     print('%s: %s' % (k, v))
         data_decode = f.read().decode('utf-8')
-        print('Data:', data_decode)
+        data_decode = json.loads(data_decode)
+        print(type(data_decode), data_decode)
     return data_decode
 
-# url = 'https://opendata.paris.fr/api/records/1.0/search/?dataset=que-faire-a-paris-&rows=10000&facet=category&facet=tags&facet=address_zipcode&facet=address_city&facet=pmr&facet=blind&facet=deaf&facet=access_type&facet=price_type'
-# data = get_data_from_API_with_head(url)
+def data_clean(raw_data):
+    events = raw_data['records']
+    cleaned_data = {}
+    for event in events:
+        cleaned_data[event['recordid']] = {}
+        label_list = [('event_id','id'),('title','title'),('category','categoty'),('price','price_detail'),('description','description'),('link','access_link'),('telephone','access_phone'),('cover_letter','cover_credit')]
+        for a,b in label_list:
+            try:
+                cleaned_data[event['recordid']][a] = event['fields'][b]
+            except KeyError:
+                print('KeyError in', a)
+            finally:
+                cleaned_data[event['recordid']][a] = "unknown"
+    return cleaned_data
+url = 'https://opendata.paris.fr/api/records/1.0/search/?dataset=que-faire-a-paris-&rows=10&facet=category&facet=tags&facet=address_zipcode&facet=address_city&facet=pmr&facet=blind&facet=deaf&facet=access_type&facet=price_type'
+data = get_data_from_API_with_head(url)
+cleaned_data = data_clean(data)
+print(cleaned_data)
